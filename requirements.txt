@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pydantic
+jira
+pytz
+python-dotenv
+openai
+tiktoken
