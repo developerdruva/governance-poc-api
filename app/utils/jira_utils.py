@@ -68,10 +68,13 @@ def generate_cfd_data(jira, project_key, assignees, start_date, end_date):
     print(f"Generated CFD data points: {len(cfd_data)}")
     return cfd_data
 
+from jira import JIRA
+
 def get_assignees_from_jql(project_key, jira, assignees, start_at, max_results, jql):
     print(f"Final JQL: {jql}")
     while start_at <= 1000:
-        issues = jira.search_issues(jql, startAt=start_at, maxResults=max_results)
+        # Pass JQL as the first positional argument (no jql= keyword)
+        issues = jira.enhanced_search_issues(jql, params={"startAt": start_at, "maxResults": max_results})
         print(f"Fetched {len(issues)} issues starting at {start_at}")
         if not issues:
             break
@@ -81,6 +84,7 @@ def get_assignees_from_jql(project_key, jira, assignees, start_at, max_results, 
         if len(issues) < max_results:
             break
         start_at += max_results
+
     print(f"Found {len(assignees)} unique assignees for project {project_key}")
-    print("Assignees:", sorted(list(assignees)))
-    return {"assignees": sorted(list(assignees))}
+    print("Assignees: ", sorted(list(assignees)))
+    return {"assignees": sorted(list(assignees))} if assignees else {"assignees": []}

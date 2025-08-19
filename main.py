@@ -4,14 +4,18 @@ from app.api import sprint_report, test_iterations
 
 app = FastAPI()
 
+# Allow requests from your frontend
+origins = [
+    "http://localhost:3000",  # or "*" to allow all origins (not recommended for prod)
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"],  # GET, POST, PUT, DELETE, etc.
+    allow_headers=["*"],  # Allow all headers
 )
-
 # app.include_router(test_iterations.router, prefix="/test-iterations")
 
 @app.get("/")
